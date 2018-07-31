@@ -1,5 +1,6 @@
 import flask
 
+request = flask.request
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -14,18 +15,34 @@ def index():
 
 
 @app.route('/entry', methods=["POST"])
-def new():
-    return "<h1>You added a new entry</h1>"
+def create():
+    params = request.get_json()
+    if "body" in params:
+        return "<h1>You added a new entry:</h1> <p>{body}</p>".format(
+            body=params["body"]
+        ) 
+    else: 
+        return "No content provided"
 
 
 @app.route('/entry/<int:id>', methods=["PUT"])
 def edit(id):
-    return "You've edited %d" % id
+    params = request.get_json()
+    if "body" in params and id:
+        return "<h1>You edited entry number {id} a new entry:</h1> <p>{body}</p>".format(
+            id=id, 
+            body=params["body"]
+         )
+    else: 
+        return "No content provided"
 
 
 @app.route('/entry/<int:id>', methods=["DELETE"])
 def delete(id):
-    return "You've just deleted %d" % id
+    return "You've just deleted entry #{id}".format(
+        id=id
+    )
+    
 
 app.run()
 
