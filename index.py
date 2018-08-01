@@ -10,12 +10,19 @@ def home():
 
 
 @app.route('/entries', methods=["GET"])
-def index():
+def browse():
     return "<h1>This is an index of entries<h1>"
 
 
+@app.route('/entry/<int:id>', methods=["GET"])
+def read(id):
+    return "<h1>This is entry #{id}".format(
+        id=id
+    )
+
+
 @app.route('/entry', methods=["POST"])
-def create():
+def add():
     params = request.get_json()
     if "body" in params:
         return "<h1>You added a new entry:</h1> <p>{body}</p>".format(
@@ -28,7 +35,7 @@ def create():
 @app.route('/entry/<int:id>', methods=["PUT"])
 def edit(id):
     params = request.get_json()
-    if "body" in params and id:
+    if "body" in params:
         return "<h1>You edited entry number {id} a new entry:</h1> <p>{body}</p>".format(
             id=id, 
             body=params["body"]
