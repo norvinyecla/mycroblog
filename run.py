@@ -1,4 +1,6 @@
 import flask
+from models import Entry
+
 
 request = flask.request
 app = flask.Flask(__name__)
