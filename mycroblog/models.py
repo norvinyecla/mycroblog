@@ -9,7 +9,7 @@ class Entry(db.Model):
     def __repr__(self):
         return '%s' % self.text
 
-    def add(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
