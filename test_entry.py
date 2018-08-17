@@ -17,6 +17,7 @@ class EntryTestCase(unittest.TestCase):
         res = self.client().post('/entry', data=self.entry)
         self.assertEqual(res.status_code, 201)
 
+
     def test_entry_get_by_id(self):
         res = self.client().post('/entry', data=self.entry)
         self.assertEqual(res.status_code, 201)
