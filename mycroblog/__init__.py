@@ -35,6 +35,34 @@ def create_app(config_name):
             response.status_code = 405
             return response
 
+    @app.route('/entry/<int:id>', methods=['GET'])
+    def find_one(id):
+        entry = Entry.query.filter_by(id=id)
+        if not entry:
+            abort(404)
+        else:
+            response = jsonify({
+                'id': entry.id,
+                'text': entry.text,
+                'date_created': entry.date_created
+            })
+            response.status_code = 200
+            return response
+
+    @app.route('/entries', methods=['GET'])
+    def browse():
+        entries = Entry.get_all()
+        results = []
+        for entry in entries:
+            obj = {
+                'id': entry.id,
+                'text': entry.text,
+                'date_created': entry.date_created
+            }
+            results.append(obj)
+        response = jsonify(results)
+        response.status_code = 200
+        return response
 
     return app
 

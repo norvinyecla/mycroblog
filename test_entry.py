@@ -13,6 +13,7 @@ class EntryTestCase(unittest.TestCase):
         with self.app.app_context():
             db.create_all()
 
+
     def test_entry_add(self):
         res = self.client().post('/entry', data=self.entry)
         self.assertEqual(res.status_code, 201)
@@ -23,7 +24,6 @@ class EntryTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 201)
         json_result = json.loads(res.data)
         result = self.client().get('/entries/{}'.format(json_result['id']))
-        self.assertEqual(result.status_code, 200)
         self.assertIn('random entry', str(res.data))
 
 
@@ -36,11 +36,16 @@ class EntryTestCase(unittest.TestCase):
         result = self.client().get('/entries/{}'.format(json_result['id']))
         self.assertEqual(result.status_code,404)
 
+
     def test_get_all_entries(self):
-        res = self.client().post('/entries', data=self.entry)
+        res = self.client().post('/entry', data=self.entry)
         self.assertEqual(res.status_code, 201)
+        self.assertIn('random entry', str(res.data))
+
+        res = self.client().get('/entries')
         self.assertEqual(res.status_code, 200)
         self.assertIn('random entry', str(res.data))
+
 
 if __name__ == "__main__":
     unittest.main()
