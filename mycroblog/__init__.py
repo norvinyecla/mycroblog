@@ -37,7 +37,7 @@ def create_app(config_name):
 
     @app.route('/entry/<int:id>', methods=['GET'])
     def find_one(id):
-        entry = Entry.query.filter_by(id=id)
+        entry = Entry.query.filter_by(id=id).first()
         if not entry:
             abort(404)
         else:
