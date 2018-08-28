@@ -64,7 +64,12 @@ def create_app(config_name):
     
     @app.route('/entries', methods=['GET'])
     def browse():
+        q = request.args.get('q')
         entries = Entry.get_all()
+        
+        if q:
+            entries = Entry.query.filter(Entry.text.contains(q))
+
         results = []
         for entry in entries:
             obj = {
