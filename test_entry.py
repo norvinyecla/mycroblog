@@ -35,9 +35,9 @@ class EntryTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 201)
         json_result = json.loads(res.data)
         
-        self.client().delete('/entries/{}'.format(json_result['id']))
-        result = self.client().get('/entries/{}'.format(json_result['id']))
-        self.assertEqual(result.status_code,404)
+        self.client().delete('/entry/{}'.format(json_result['id']))
+        result2 = self.client().get('/entry/{}'.format(json_result['id']))
+        self.assertEqual(result2.status_code, 404)
 
 
     def test_get_all_entries(self):
