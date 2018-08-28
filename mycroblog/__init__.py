@@ -37,7 +37,7 @@ def create_app(config_name):
 
     @app.route('/entry/<int:id>', methods=['GET'])
     def find_one(id):
-        entry = Entry.query.filter_by(id=id)
+        entry = Entry.query.filter_by(id=id).first()
         if not entry:
             abort(404)
         else:
@@ -49,6 +49,19 @@ def create_app(config_name):
             response.status_code = 200
             return response
 
+    @app.route('/entry/<int:id>', methods=['DELETE'])
+    def delete(id):
+        entry = Entry.query.filter_by(id=id).first()
+        if not entry:
+            abort(404)
+        else:
+            entry.delete()
+            response = jsonify({
+                'message': 'Successfully deleted.'
+            })
+            response.status_code = 200
+            return response
+    
     @app.route('/entries', methods=['GET'])
     def browse():
         entries = Entry.get_all()

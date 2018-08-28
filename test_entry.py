@@ -20,11 +20,14 @@ class EntryTestCase(unittest.TestCase):
 
 
     def test_entry_get_by_id(self):
-        res = self.client().post('/entry', data=self.entry)
-        self.assertEqual(res.status_code, 201)
-        json_result = json.loads(res.data)
-        result = self.client().get('/entries/{}'.format(json_result['id']))
-        self.assertIn('random entry', str(res.data))
+        result1 = self.client().post('/entry', data=self.entry)
+        self.assertEqual(result1.status_code, 201)
+        json_result1 = json.loads(result1.data)
+
+        result2 = self.client().get('/entry/{}'.format(json_result1['id']))
+        json_result2 = json.loads(result2.data)
+        self.assertIn(str(json_result1['text']), str(json_result2['text']))
+        self.assertEqual(str(json_result1['id']), str(json_result2['id']))
 
 
     def test_entry_delete(self):
@@ -32,9 +35,9 @@ class EntryTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 201)
         json_result = json.loads(res.data)
         
-        self.client().delete('/entries/{}'.format(json_result['id']))
-        result = self.client().get('/entries/{}'.format(json_result['id']))
-        self.assertEqual(result.status_code,404)
+        self.client().delete('/entry/{}'.format(json_result['id']))
+        result2 = self.client().get('/entry/{}'.format(json_result['id']))
+        self.assertEqual(result2.status_code, 404)
 
 
     def test_get_all_entries(self):
